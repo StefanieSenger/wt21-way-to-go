@@ -5,12 +5,17 @@ import axios from "axios";
 function DataFetching() {
   const [route, setRoute] = useState({});
   const [id, setId] = useState(1);
+  const [idFromButtonClick, setIdFromButtonClick] = useState(1);
+
+  const handleClick = () => {
+    setIdFromButtonClick(id);
+  };
 
   // Modify the current state by setting the new data to
   // the response from the backend
   useEffect(() => {
     axios
-      .get(`https://localhost:5000/route_linestring${id}`)
+      .get(`https://localhost:5000/route_linestring${idFromButtonClick}`)
       .then((res) => {
         console.log(res);
         setRoute(res.data);
@@ -18,7 +23,7 @@ function DataFetching() {
       .catch((err) => {
         console.log(err);
       });
-  }, [id]);
+  }, [idFromButtonClick]);
 
   return (
     <div className="App container m-4">
@@ -29,6 +34,9 @@ function DataFetching() {
             value={id}
             onChange={(e) => setId(e.target.value)}
           />
+          <button type="button" onClick={handleClick}>
+            Fetch Route
+          </button>
           <div>{route.title}</div>
         </div>
       </div>
